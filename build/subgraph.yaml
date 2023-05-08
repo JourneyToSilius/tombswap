@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: UniswapV2Factory
@@ -17,13 +17,11 @@ dataSources:
         - PairCreated
       abis:
         - name: UniswapV2Factory
-          file: ./abis/UniswapV2Factory.json
+          file: UniswapV2Factory/abis/UniswapV2Factory.json
       eventHandlers:
         - event: PairCreated(indexed address,indexed address,address,uint256)
           handler: handlePairCreated
-      file: ./src/uniswap-v-2-factory.ts
-
-
+      file: UniswapV2Factory/UniswapV2Factory.wasm
 templates:
   - kind: ethereum/contract
     name: UniswapV2Pair
@@ -34,14 +32,14 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ./src/uniswap-v-2-factory.ts
+      file: UniswapV2Factory/UniswapV2Factory.wasm
       entities:
         - Pair
       abis:
         - name: UniswapV2Pair
-          file: ./abis/UniswapV2Pair.json 
+          file: UniswapV2Pair/abis/UniswapV2Pair.json
         - name: UniswapV2Factory
-          file: ./abis/UniswapV2Factory.json
+          file: UniswapV2Pair/abis/UniswapV2Factory.json
       eventHandlers:
         - event: Sync(uint112,uint112)
           handler: handleSync
