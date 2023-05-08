@@ -1,26 +1,18 @@
-import { PairCreated as PairCreatedEvent } from "../generated/UniswapV2Factory/UniswapV2Factory"
-import { PairCreated, Pair } from "../generated/schema"
+import { PairCreated  } from "../generated/UniswapV2Factory/UniswapV2Factory"
+import { Pair} from "../generated/schema"
 import { BigInt } from "@graphprotocol/graph-ts"
 import { UniswapV2Pair as PairTemplate } from "../generated/templates"
+import {
+  Sync
+} from "../generated/templates/UniswapV2Pair/UniswapV2Pair"
 
-export function handlePairCreated(event: PairCreatedEvent): void {
-  // Create a new PairCreated entity
-  let pairCreated = new PairCreated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  pairCreated.token0 = event.params.token0
-  pairCreated.token1 = event.params.token1
-  pairCreated.pair = event.params.pair
-  pairCreated.param3 = event.params.param3
-  pairCreated.blockNumber = event.block.number
-  pairCreated.blockTimestamp = event.block.timestamp
-  pairCreated.transactionHash = event.transaction.hash
-  pairCreated.save()
+export function handlePairCreated(event: PairCreated): void {
+  // Entities can be loaded from the store using a string ID; this ID
+  // needs to be unique across all entities of the same type
+  let pair = Pair.load(event.transaction.from.toHex())
 
-  // Create a new Pair entity and assign it to the PairTemplate
-  let pair = new Pair(event.params.pair.toHex())
-  PairTemplate.create(event.params.pair)
-
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
   if (!pair) {
     pair = new Pair(event.transaction.from.toHex())
 
@@ -32,6 +24,8 @@ export function handlePairCreated(event: PairCreatedEvent): void {
     pair.reserve1 = BigInt.fromI32(0)
   }
 
+  pair.count = pair.count.plus(BigInt.fromI32(1))
+
   //  fields can be set based on event parameters
   pair.token0 = event.params.token0
   pair.token1 = event.params.token1
@@ -42,3 +36,13 @@ export function handlePairCreated(event: PairCreatedEvent): void {
 
 }
 
+export function handleSync(event: Sync): void {
+    
+  let pair = Pair.load(event.address.toHex())
+   
+  if(pair) {
+    pair.reserve0 = BigInt.fromI32(event.params.reserve0.toI32())
+    pair.reserve1 = BigInt.fromI32(event.params.reserve1.toI32())
+    pair.save()
+  }
+}
