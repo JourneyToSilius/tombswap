@@ -30,7 +30,7 @@ templates:
       abi: UniswapV2Pair
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       file: UniswapV2Factory/UniswapV2Factory.wasm
       entities:

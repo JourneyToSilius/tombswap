@@ -1,6 +1,6 @@
 import { PairCreated as PairCreatedEvent } from "../generated/UniswapV2Factory/UniswapV2Factory"
 import { PairCreated, Pair } from "../generated/schema"
-import { BigInt, ethereum } from "@graphprotocol/graph-ts"
+import { BigInt } from "@graphprotocol/graph-ts"
 import { UniswapV2Pair as PairTemplate } from "../generated/templates"
 
 export function handlePairCreated(event: PairCreatedEvent): void {
