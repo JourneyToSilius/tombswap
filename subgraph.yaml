@@ -14,34 +14,43 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - PairCreated
+        - Factory
       abis:
         - name: UniswapV2Factory
           file: ./abis/UniswapV2Factory.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json 
+        - name: ERC20Token
+          file: ./abis/ERC20Token.json 
+
       eventHandlers:
         - event: PairCreated(indexed address,indexed address,address,uint256)
           handler: handlePairCreated
-      file: ./src/uniswap-v-2-factory.ts
+      file: ./src/tombswap.ts
 
 
 templates:
-  - kind: ethereum/contract
+  - kind: ethereum
     name: UniswapV2Pair
     network: fantom
     source:
       abi: UniswapV2Pair
+
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
-      file: ./src/uniswap-v-2-factory.ts
       entities:
+        - Reserves
+        - Token0
+        - Token1
         - Pair
       abis:
         - name: UniswapV2Pair
           file: ./abis/UniswapV2Pair.json 
-        - name: UniswapV2Factory
-          file: ./abis/UniswapV2Factory.json
+        - name: ERC20Token
+          file: ./abis/ERC20Token.json 
       eventHandlers:
         - event: Sync(uint112,uint112)
           handler: handleSync
+      file: ./src/tombswap.ts

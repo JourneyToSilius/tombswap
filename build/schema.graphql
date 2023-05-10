@@ -1,19 +1,38 @@
-type PairCreated @entity(immutable: true) {
-  id: Bytes!
-  token0: Bytes! # address
-  token1: Bytes! # address
-  pair: Bytes! # address
-  param3: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Factory @entity {
+  id: ID!
+  name : String!
+}
+
+type Token0 @entity {
+  id: ID!
+  name: String!
+  symbol: String!
+  decimals: Int!
+}
+
+type Token1 @entity {
+  id: ID!
+  name: String!
+  symbol: String!
+  decimals: Int!
 }
 
 type Pair @entity {
   id: ID!
-  count: BigInt!
-  token0: Bytes! # address
-  token1: Bytes! # address
+  symbol : String!
+  name : String!
+  token0: Token0!
+  token1: Token1!
+  factory: Factory!
+  reserves : [Reserves!]!
+}
+
+type Reserves @entity {
+  id: ID!
+  block: BigInt!
   reserve0: BigInt!
   reserve1: BigInt!
+  timestamp: BigInt!
+  token0xtoken1 : BigDecimal!
+  token1xtoken0 : BigDecimal!
 }

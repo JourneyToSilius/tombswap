@@ -9,7 +9,7 @@ import {
 import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { PairCreated } from "../generated/schema"
 import { PairCreated as PairCreatedEvent } from "../generated/UniswapV2Factory/UniswapV2Factory"
-import { handlePairCreated } from "../src/uniswap-v-2-factory"
+import { handlePairCreated } from "../src/tombswap"
 import { createPairCreatedEvent } from "./uniswap-v-2-factory-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
